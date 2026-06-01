@@ -10,12 +10,6 @@ jobs:
       cancel-in-progress: true
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
-      - uses: ./
-
-      # Make sure the latest changes from the pull request are used.
-      - name: Install
-        run: sudo ln -svf $PWD/bin/mkosi /usr/bin/mkosi
-        working-directory: ./
 
       - name: Build tools tree
         run: |
@@ -24,10 +18,10 @@ jobs:
           ToolsTreeDistribution=arch
           EOF
 
-          mkosi -f box -- true
+          bin/mkosi -f box -- true
 
       - name: Run unit tests
-        run: mkosi box -- python3 -m pytest -sv
+        run: bin/mkosi box -- python3 -m pytest -sv
 
       - name: Test execution from current working directory (sudo call)
-        run: sudo python3 -m mkosi -h
+        run: sudo python3 -m bin/mkosi -h
